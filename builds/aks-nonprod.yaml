@@ -33,9 +33,9 @@ jobs:
     aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
   steps:
   - task: DownloadSecureFile@1
-      displayName: 'Download flux deploy key'
-      inputs:
-        secureFile: preview-flux-git-deploy.yaml
+    displayName: 'Download flux deploy key'
+    inputs:
+      secureFile: preview-flux-git-deploy.yaml
 
   - task: Bash@3
     displayName: 'Create flux deploy key secret'
