@@ -7,5 +7,3 @@ git:
   label: preview
   pollInterval: 1m
   secretName: flux-git-deploy
-additionalArgs:
-- --connect=ws://fluxcloud
