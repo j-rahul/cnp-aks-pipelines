@@ -40,6 +40,11 @@ jobs:
       inlineScript: |
         az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksClusterName) --overwrite
 
+  - task: HelmInstaller@1
+    displayName: 'Install Helm ${{parameters.helmVersion}}'
+    inputs:
+      helmVersionToInstall: ${{parameters.helmVersion}}
+
   - task: DownloadSecureFile@1
     displayName: 'Download flux deploy key'
     inputs:
