@@ -125,9 +125,10 @@ jobs:
       targetType: inline
       failOnStderr: false
       script: |
-        kubectl apply -f deployments/fluxcd/flux-helm-release-crd.yaml
-        helm repo add fluxcd https://fluxcd.github.io/flux
-        helm upgrade flux fluxcd/flux --install --namespace admin -f helm/nonprod/flux.yaml --version 0.14.1 --wait
+        helm repo add fluxcd https://charts.fluxcd.io
+        kubectl apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/chart-0.2.1/deploy/flux-helm-release-crd.yaml
+        helm upgrade flux fluxcd/flux --install --namespace admin -f helm/nonprod/flux.yaml --version 0.15.0 --wait
+        helm upgrade --name helm-operator fluxcd/helm-operator --namespace admin --version 0.2.1 --wait
 
   - task: DownloadSecureFile@1
     displayName: 'Download flux deploy key'
