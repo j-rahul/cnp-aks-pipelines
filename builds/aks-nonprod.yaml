@@ -36,6 +36,7 @@ jobs:
     displayName: 'Install Helm '
     inputs:
       helmVersionToInstall: 2.16.1
+
   - task: AzureCLI@1
     displayName: 'Create namespaces'
     inputs:
@@ -44,11 +45,6 @@ jobs:
       inlineScript: |
         az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksClusterName) --overwrite
         helm init --client-only
-
-  - task: HelmInstaller@1
-    displayName: 'Install Helm ${{parameters.helmVersion}}'
-    inputs:
-      helmVersionToInstall: ${{parameters.helmVersion}}
 
   - task: DownloadSecureFile@1
     displayName: 'Download flux deploy key'
