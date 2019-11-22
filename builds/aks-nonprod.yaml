@@ -33,9 +33,9 @@ jobs:
     aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
   steps:
   - task: HelmInstaller@1
-      displayName: 'Install Helm ${{parameters.helmVersion}}'
+      displayName: 'Install Helm '
       inputs:
-        helmVersionToInstall: ${{parameters.helmVersion}}
+        helmVersionToInstall: 2.16.1
   - task: AzureCLI@1
     displayName: 'Create namespaces'
     inputs:
