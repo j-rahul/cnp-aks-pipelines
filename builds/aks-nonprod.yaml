@@ -32,6 +32,14 @@ jobs:
     aksServicePrincipalId: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalId']]
     aksServicePrincipalSecret: $[dependencies.Keyvault.outputs['exportKeyvault.aksServicePrincipalSecret']]
   steps:
+  - task: AzureCLI@1
+    displayName: 'Create namespaces'
+    inputs:
+      azureSubscription: azurerm-nonprod
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksClusterName) --overwrite
+
   - task: DownloadSecureFile@1
     displayName: 'Download flux deploy key'
     inputs:
