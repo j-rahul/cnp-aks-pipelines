@@ -119,21 +119,10 @@ jobs:
       script: |
         helm upgrade sealed-secrets stable/sealed-secrets --version 1.0.1 --install --namespace admin --set secretName=preview-sealed-secrets-key --wait
 
-  - task: Bash@3
-    displayName: 'Install FluxCD Flux'
-    inputs:
-      targetType: inline
-      failOnStderr: false
-      script: |
-        helm repo add fluxcd https://charts.fluxcd.io
-        kubectl apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/chart-0.2.1/deploy/flux-helm-release-crd.yaml
-        helm upgrade flux fluxcd/flux --install --namespace admin -f helm/nonprod/flux.yaml --version 0.15.0 --wait
-        helm upgrade --name helm-operator fluxcd/helm-operator --namespace admin --version 0.2.1 --wait
-
   - task: DownloadSecureFile@1
-    displayName: 'Download flux deploy key'
-    inputs:
-      secureFile: preview-flux-git-deploy.yaml
+      displayName: 'Download flux deploy key'
+      inputs:
+        secureFile: preview-flux-git-deploy.yaml
 
   - task: Bash@3
     displayName: 'Create flux deploy key secret'
@@ -143,5 +132,17 @@ jobs:
       script: |
         kubectl -n admin delete secret flux-git-deploy
         kubectl create -f $(Agent.TempDirectory)/preview-flux-git-deploy.yaml
-        kubectl -n admin delete $(kubectl get pod -o name -l app=flux -n admin)
+
+  - task: Bash@3
+    displayName: 'Install FluxCD Flux'
+    inputs:
+      targetType: inline
+      failOnStderr: false
+      script: |
+        helm repo add fluxcd https://charts.fluxcd.io
+        kubectl apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/chart-0.3.0/deploy/flux-helm-release-crd.yaml
+        helm upgrade flux fluxcd/flux --install --namespace admin -f helm/nonprod/flux.yaml --version 0.15.0 --wait
+        helm upgrade --name helm-operator fluxcd/helm-operator -f helm/nonprod/helm-operator.yaml --namespace admin --version 0.3.0 --wait
+
+
 
