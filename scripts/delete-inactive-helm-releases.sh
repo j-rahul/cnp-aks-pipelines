@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-for ns in $(echo "am bsp camunda ccd chart-tests cnp ctsc dg divorce em ethos evidence-mment family-public-law fees-pay financial-remedy ia idam immigration money-claims probate professional-applications rd rpe sscs"); do
+for ns in $(echo "money-claims"); do
   helmreleases=$(helm ls --namespace=${ns} --output=json)
   inactiveDays=${1:-7}
 
